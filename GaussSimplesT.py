@@ -20,10 +20,13 @@ def main():
     print(vetResp)
     print("vetX:")
     print(x)
-    gausSimples(x, vetResp, tamI, tamJ)
+    x, vetResp = gaussSimples(x, vetResp, tamI, tamJ)
+    print("Gauss Simples:")
+    print(x)
+    print(vetResp)
+    retroSolucao(x, vetResp, tamI, tamJ)
 
-
-def gausSimples(x, vetResp, tamI, tamJ):
+def retroSolucao(x, vetResp, tamI, tamJ):
     Resp = []
     xResp = 0
     for i in range(len(vetResp)):
@@ -37,10 +40,22 @@ def gausSimples(x, vetResp, tamI, tamJ):
             for j in range(i+1, tamI):
                 flag = flag + x[i][j] * Resp[j]
             xResp = (vetResp[i] - flag)/x[i][i]
-
             Resp[i] = xResp
+    print("Retro Solucao: ")
     print(Resp)
 
-
+def  gaussSimples(x, vetResp, tamI, tamJ):
+    m = 0
+    for j in range(tamI):
+        for i in range(tamI):
+            if (i>j):
+                m = -(x[i][j]/x[j][j])
+                print("m= ", m)
+                for k in range(tamI):
+                    x[i][k] = x[i][k] + (m*x[j][k])
+                vetResp[i] = vetResp[i] + m*vetResp[j]
+    return x, vetResp
+                    
+        
 
 main()

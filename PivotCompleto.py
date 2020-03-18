@@ -52,7 +52,10 @@ def retroSolucao(x, vetResp, tamI, tamJ):
 def  gaussSimples(x, vetResp, tamI, tamJ):
     m = 0
     flag = 0
+    flagPivot = 0
     for j in range(tamI):
+        x = pivotCompleto(x,vetResp, tamI, tamJ, flagPivot)
+        flagPivot += 1
         for i in range(tamI):
             if (i>j):
                 x, vetResp = pivotParcial(x, vetResp, tamI, tamJ, flag)
@@ -69,9 +72,11 @@ def pivotParcial(x, vetResp, tamI, tamJ, flag):
     aux2 = []
     indice = 0
     auxResp = 0
-    for i in range(tamI):
-        aux.append(x[i][0])
-    for i in range(len(aux)):
+    if (flag+1 == tamI):
+        flag -=1
+    for i in range(flag, tamI):
+        aux.append(x[i][flag])
+    for i in range(flag, len(aux)):
         if (abs(aux[i]) > abs(aux[indice])):
             indice = i
     aux2 = x[indice]
@@ -81,12 +86,33 @@ def pivotParcial(x, vetResp, tamI, tamJ, flag):
     vetResp[flag] = vetResp[indice]
     vetResp[indice] = auxResp
     print("-----------Pivoteamento Parcial---------------")
+    print("Flag:",flag)
     print("Matriz:")
     for i in range(tamI):
         print(x[i])
     print("Vetor Resposta:")
     print(vetResp)
     return x, vetResp
-    
+
+def pivotCompleto(x, vetResp, tamI, tamJ,flag):
+    flagJ = 0
+    comparador = 0
+    aux = 0
+    for i in range(flag, tamI):
+        for j in range(tamI):
+            if (abs(x[i][j]) > abs(comparador)):
+                comparador = x[i][j]
+                flagJ = j
+    for i in range(flag, tamI):
+        aux = x[i][flag]
+        x[i][flag] = x[i][flagJ]
+        x[i][flagJ] = aux
+    print("-----------Pivoteamento Completo---------------")
+    print("Matriz:")
+    for i in range(tamI):
+        print(x[i])
+    print("Vetor Resposta:")
+    print(vetResp)
+    return x
 
 main()
